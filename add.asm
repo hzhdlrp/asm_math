@@ -1,6 +1,5 @@
 section .text
-global add
-
+    global add
 add:
     enter 0, 0
     mov eax, [ebp + 8]
