@@ -4,9 +4,9 @@ temp: resq 1
 
 
 section .text
-    global f1
+    global test1_d
 
-f1: ; e^(-x) + 3
+test1_d: ; d(x^3)/dx = 3x^2
     enter 0, 0
 
     mov eax, dword[ebp + 8]
@@ -16,16 +16,12 @@ f1: ; e^(-x) + 3
 
     finit
     fld qword[x]
-    fchs
-    fldl2e
-    ; st0 - log2(e)
-    ; st1 - (-x)
+    fld st0
     fmulp
-    ;st0 - log2(e)*(-x)
-    f2xm1
-    ;st0 - e^(-x) - 1
-    mov dword[temp], 4
-    fiadd dword[temp]
+    ; st0 - x^2
+    mov dword[temp], 3
+    fild dword[temp]
+    fmulp
 
     leave
     ret

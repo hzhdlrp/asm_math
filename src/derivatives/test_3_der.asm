@@ -2,11 +2,9 @@ section .bss
 x: resq 1
 temp: resq 1
 
-
 section .text
-    global f3
-    
-f3: ; 1/x
+    global test3_d
+test3_d: ; d(ln(x))/dx = 1/x, x > 0
     enter 0, 0
 
     mov eax, dword[ebp + 8]
@@ -15,8 +13,7 @@ f3: ; 1/x
     mov dword[x + 4], eax
 
     finit
-    mov dword[temp], 1
-    fild qword[temp]
+    fld1
     fld qword[x]
     ; st0 - x
     ; st1 - 1
@@ -24,9 +21,18 @@ f3: ; 1/x
     ;st0 - 1 * log2(x)
     fchs
     ; st0 - (-log2(x))
+
+    fld st0
+    frndint
+    fsub st1, st0
+    ; st0 - truc(-log2(x))
+    ; st1 - frac(-log2(x))
+    fxch
     f2xm1
-    ; st0 - 2^(-log2(x)) - 1 = 1/x - 1
-    fiadd dword[temp]
+    fld1
+    faddp
+    fscale
+    ; st0 - 2^(-log2(x))= 1/x
 
     leave
     ret

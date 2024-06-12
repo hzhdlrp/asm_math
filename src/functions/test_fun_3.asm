@@ -1,12 +1,16 @@
+extern printf
+section .data
+frm: db "%lf", 0xA, 0
+
 section .bss
 x: resq 1
 temp: resq 1
 
 
 section .text
-    global f2
+    global test3
 
-f2: ; 2x - 2
+test3: ; ln(x), x > 0
     enter 0, 0
 
     mov eax, dword[ebp + 8]
@@ -15,10 +19,13 @@ f2: ; 2x - 2
     mov dword[x + 4], eax
 
     finit
+    fld1
     fld qword[x]
-    mov dword[temp], 2
-    fimul dword[temp]
-    fisub dword[temp]
-
+    fyl2x
+    ; st0 - log2(x)
+    fldl2e
+    ; st0 - log2(e)
+    ; st1 - log2(x)
+    fdivp
     leave
     ret

@@ -1,21 +1,31 @@
+FUNCTIONS = fun_1.asm fun_2.asm fun_3.asm test_fun_1.asm test_fun_2.asm test_fun_3.asm
+FUNCTIONS_OBJ = $(FUNCTIONS:.asm=.o)
+FUNCTIONS_DIR = src/functions
+
+DERIVATIVES = fun_1_der.asm fun_2_der.asm fun_3_der.asm test_1_der.asm test_2_der.asm test_3_der.asm
+DERIVATIVES_OBJ = $(DERIVATIVES:.asm=.o)
+DERIVATIVES_DIR = src/derivatives
+
+LIB = root.c integral.c
+LIB_OBJ = $(LIB:.c=.o)
+LIB_DIR = lib
+
 all: main clean
 
-main: main.o function_1.o function_2.o function_3.o 
-	gcc -m32 main.o function_1.o function_2.o function_3.o -o main
+main: main.o $(FUNCTIONS_OBJ) $(DERIVATIVES_OBJ) $(LIB_OBJ)
+	gcc -m32 main.o $(FUNCTIONS_OBJ) $(DERIVATIVES_OBJ) $(LIB_OBJ) -o main
 
-main.o: 
+main.o: main.c
 	gcc -m32 -c main.c
 
-function_1.o: 
-	nasm -f elf32 src/function_1.asm -o function_1.o
+$(LIB_OBJ): %.o: $(LIB_DIR)/%.c
+	gcc -m32 -c $< -o $@
 
-function_2.o: 
-	nasm -f elf32 src/function_2.asm -o function_2.o
+$(FUNCTIONS_OBJ): %.o: $(FUNCTIONS_DIR)/%.asm
+	nasm -f elf32 $< -o $@
 
-function_3.o: 
-	nasm -f elf32 src/function_3.asm -o function_3.o
+$(DERIVATIVES_OBJ): %.o: $(DERIVATIVES_DIR)/%.asm
+	nasm -f elf32 $< -o $@
 
 clean:
-	rm -rf *.o 
-
-
+	rm -f *.o 
