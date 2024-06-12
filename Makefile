@@ -10,13 +10,13 @@ LIB = root.c integral.c
 LIB_OBJ = $(LIB:.c=.o)
 LIB_DIR = lib
 
-all: main clean
+all: integral clean
 
-main: main.o $(FUNCTIONS_OBJ) $(DERIVATIVES_OBJ) $(LIB_OBJ)
-	gcc -m32 main.o $(FUNCTIONS_OBJ) $(DERIVATIVES_OBJ) $(LIB_OBJ) -o main
+integral: main.o $(FUNCTIONS_OBJ) $(DERIVATIVES_OBJ) $(LIB_OBJ)
+	gcc -m32 main.o $(FUNCTIONS_OBJ) $(DERIVATIVES_OBJ) $(LIB_OBJ) -o integral
 
 main.o: main.c
-	gcc -m32 -c main.c
+	gcc -m32 -m32 -c main.c
 
 $(LIB_OBJ): %.o: $(LIB_DIR)/%.c
 	gcc -m32 -c $< -o $@

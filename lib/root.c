@@ -1,6 +1,14 @@
 #include <stdbool.h>
+#include <stdio.h>
 #include "root.h"
 
+int iterations = 0;
+int get_iterations(void) {
+    return iterations;
+}
+void reset_iterations(void) {
+    iterations = 0;
+}
 typedef enum points {
     A,
     B,
@@ -38,8 +46,8 @@ double root(afunc *f, afunc *g, afunc *f_, afunc *g_, double a, double b, double
             c = root(f, g, f_, g_, a, c, eps1);
         } 
     }
-    return c;
     iterations++;
+    return c;
 }
 // 2.36788
 // 0.632121

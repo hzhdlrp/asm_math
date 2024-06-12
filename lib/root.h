@@ -1,3 +1,5 @@
+#pragma once
 typedef double afunc(double);
-double root(afunc *f, afunc *g, afunc *f_, afunc *g_, double a, double b, double eps1);
-int iterations = 0;
+double root(afunc *, afunc *, afunc *, afunc *, double, double, double);
+int get_iterations(void);
+void reset_iterations(void);
