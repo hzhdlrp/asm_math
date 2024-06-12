@@ -4,7 +4,7 @@ x: resq 1
 section .text
     global f1_d
 
-f1_d: ; d(e^(-x) + 3)/dx = e^(-x)
+f1_d: ; d(e^(-x) + 3)/dx = -e^(-x)
     enter 0, 0
 
     mov eax, dword[ebp + 8]
@@ -32,5 +32,6 @@ f1_d: ; d(e^(-x) + 3)/dx = e^(-x)
     faddp
     fscale
     ;st0 - e^(-x)
+    fchs
     leave
     ret

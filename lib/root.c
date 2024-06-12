@@ -1,6 +1,6 @@
 #include <stdbool.h>
+#include "root.h"
 
-typedef double afunc(double);
 typedef enum points {
     A,
     B,
@@ -8,12 +8,13 @@ typedef enum points {
 
 double diff(double x, afunc *f, afunc *g) {
     return f(x) - g(x);
-}
+} 
 
 double root(afunc *f, afunc *g, afunc *f_, afunc *g_, double a, double b, double eps1) {
-    points d;
-    double c;
-    _Bool first_flag, second_flag;
+    points d; // A or B, defines the point to which the tangent is drawn
+    double c; // approximation to the root
+    _Bool first_flag, second_flag; // flags for defining the sign of F'(x)*F''(x)
+                                   // where F(x) = f(x) - g(x)
 
     if (diff(a, f, g) > 0) {
         first_flag = true;
@@ -26,16 +27,19 @@ double root(afunc *f, afunc *g, afunc *f_, afunc *g_, double a, double b, double
     if (first_flag == second_flag) {
         d = B;
     } else d = A;
-
-    if (a == A) {
+    if (d == A) {
         c = a - diff(a, f, g) / diff(a, f_, g_);
-        if (diff(c, f, g) * diff(c + eps1, f, g) < 0) {
+        if (diff(c, f, g) * diff(c + eps1, f, g) > 0) {
             c = root(f, g, f_, g_, c, b, eps1);
-        } else return c;
+        } 
     } else {
         c = b - diff(b, f, g) / diff(b, f_, g_);
-        if (diff(c, f, g) * diff(c - eps1, f, g) < 0) {
+        if (diff(c, f, g) * diff(c - eps1, f, g) > 0) {
             c = root(f, g, f_, g_, a, c, eps1);
-        } else return c;
+        } 
     }
+    return c;
+    iterations++;
 }
+// 2.36788
+// 0.632121
