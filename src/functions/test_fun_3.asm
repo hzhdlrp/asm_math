@@ -10,7 +10,7 @@ temp: resq 1
 section .text
     global test3
 
-test3: ; ln(x), x > 0
+test3: ; ln(x) + 4, x > 0
     enter 0, 0
 
     mov eax, dword[ebp + 8]
@@ -27,5 +27,7 @@ test3: ; ln(x), x > 0
     ; st0 - log2(e)
     ; st1 - log2(x)
     fdivp
+    mov dword[temp], 4
+    fiadd dword[temp]
     leave
     ret

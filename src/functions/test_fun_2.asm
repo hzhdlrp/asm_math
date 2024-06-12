@@ -6,7 +6,7 @@ temp: resq 1
 section .text
     global test2
 
-test2: ; (1-x)/3
+test2: ; (5-x)/2
     enter 0, 0
 
     mov eax, dword[ebp + 8]
@@ -17,11 +17,10 @@ test2: ; (1-x)/3
     finit
     fld qword[x]
     fchs
-    fld1
-    faddp
-    mov dword[temp], 3
-    fild dword[temp]
-    fmulp
+    mov dword[temp], 5
+    fiadd dword[temp]
+    mov dword[temp], 2
+    fidiv dword[temp]
 
     leave
     ret

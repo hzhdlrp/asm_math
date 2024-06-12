@@ -28,4 +28,8 @@ $(DERIVATIVES_OBJ): %.o: $(DERIVATIVES_DIR)/%.asm
 	nasm -f elf32 $< -o $@
 
 clean:
-	rm -f *.o 
+	rm -rf *.o 
+
+test: test.o $(FUNCTIONS_OBJ) $(DERIVATIVES_OBJ) $(LIB_OBJ) 
+	gcc -m32 test.o $(FUNCTIONS_OBJ) $(DERIVATIVES_OBJ) $(LIB_OBJ) -o test
+	rm -rf *.o
